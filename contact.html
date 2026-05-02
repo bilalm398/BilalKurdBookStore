@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Kurdish BookStore</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: url("Flag_map_of_Kurdistan.png") no-repeat center;
+            background-size: contain;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body { background: linear-gradient(to bottom, #fffbeb, #fef3c7); line-height: 1.6; }
+        a { text-decoration: none; }
+
+        header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav { max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; color: #dc2626; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .logo img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; padding: 5px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #fbbf24; }
+        
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links a { color: #4b5563; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #d97706; }
+        .nav-links a.active { color: #d97706; border-bottom: 2px solid #d97706; }
+
+        .btn { padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 500; display: inline-block; transition: 0.3s; }
+        .btn-login { color: #b45309; }
+        .btn-login:hover { color: #92400e; }
+        .btn-primary { background: #d97706; color: white; border: none; }
+        .btn-primary:hover { background: #b45309; }
+
+        section { padding: 4rem 1.5rem; position: relative; z-index: 1; }
+        
+        .page-header { text-align: center; margin-bottom: 3rem; }
+        .page-header h1 { font-size: 2.5rem; color: #1f2937; margin-bottom: 0.5rem; }
+        .page-header p { color: #6b7280; max-width: 500px; margin: 0 auto; }
+
+        .contact-container { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+        
+        .contact-form { background: white; padding: 2.5rem; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .contact-form h2 { color: #1f2937; margin-bottom: 1.5rem; font-size: 1.5rem; }
+        
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; color: #4b5563; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .form-group input, .form-group textarea { 
+            width: 100%; padding: 0.85rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; 
+            font-size: 1rem; font-family: inherit; transition: border-color 0.3s; 
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #d97706; }
+        .form-group textarea { resize: vertical; min-height: 130px; }
+        
+        .submit-btn { 
+            width: 100%; padding: 0.9rem; background: #d97706; color: white; 
+            border: none; border-radius: 0.5rem; font-size: 1rem; font-weight: 600; 
+            cursor: pointer; transition: 0.3s; 
+        }
+        .submit-btn:hover { background: #b45309; }
+
+        .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+        .info-card { 
+            background: white; padding: 1.5rem 2rem; border-radius: 1rem; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 1rem;
+        }
+        .info-icon { 
+            width: 55px; height: 55px; background: linear-gradient(135deg, #d97706, #b45309); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 1.5rem; flex-shrink: 0;
+        }
+        .info-text h3 { color: #1f2937; font-size: 1rem; margin-bottom: 0.25rem; }
+        .info-text p { color: #6b7280; font-size: 0.95rem; }
+        .info-text a { color: #d97706; }
+
+        .map-placeholder { 
+            background: linear-gradient(135deg, #d9770620, #b4530920); 
+            border-radius: 1rem; height: 250px; display: flex; align-items: center; 
+            justify-content: center; font-size: 4rem; border: 2px dashed #d9770640;
+        }
+
+        .social-links { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; }
+        .social-link { 
+            width: 45px; height: 45px; background: #1f2937; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 1.2rem; color: white; transition: 0.3s;
+        }
+        .social-link:hover { background: #d97706; transform: translateY(-3px); }
+
+        footer { background: #1f2937; color: #9ca3af; text-align: center; padding: 2rem; position: relative; z-index: 1; }
+
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #1f2937; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+            .nav-links.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .contact-container { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="Flag_map_of_Kurdistan.png" alt="Logo">
+                Kurdish BookStore
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="books.html">Books</a>
+                <a href="contact.html" class="active">Contact</a>
+                <a href="login.html" class="btn btn-login">Login</a>
+                <a href="register.html" class="btn btn-primary">Register</a>
+            </div>
+        </nav>
+    </header>
+
+    <section>
+        <div class="page-header">
+            <h1>📬 Contact Us</h1>
+            <p>Have questions? We'd love to hear from you. Send us a message!</p>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-form">
+                <h2>Send us a Message</h2>
+                <form onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" placeholder="What is this about?" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea placeholder="Write your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message ✉️</button>
+                </form>
+            </div>
+
+            <div class="contact-info">
+                <div class="info-card">
+                    <div class="info-icon">📍</div>
+                    <div class="info-text">
+                        <h3>Our Address</h3>
+                        <p>Sulaymaniyah, Kurdistan Region<br>Iraq</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">📞</div>
+                    <div class="info-text">
+                        <h3>Phone Number</h3>
+                        <p><a href="tel:+9647501234567">+964 750 123 4567</a></p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">✉️</div>
+                    <div class="info-text">
+                        <h3>Email Address</h3>
+                        <p><a href="mailto:info@kurdishbookstore.com">info@kurdishbookstore.com</a></p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">🕐</div>
+                    <div class="info-text">
+                        <h3>Working Hours</h3>
+                        <p>Sat - Thu: 9:00 AM - 8:00 PM<br>Friday: Closed</p>
+                    </div>
+                </div>
+
+               <div class="map-placeholder">
+    <iframe 
+        src="https://www.google.com/maps?q=Sulaymaniyah&output=embed"
+        width="100%" 
+        height="100%" 
+        style="border:0; border-radius:1rem;"
+        allowfullscreen=""
+        loading="lazy">
+    </iframe>
+</div>
+
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Facebook">📘</a>
+                    <a href="#" class="social-link" title="Instagram">📷</a>
+                    <a href="#" class="social-link" title="Twitter">🐦</a>
+                    <a href="#" class="social-link" title="Telegram">✈️</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Kurdish BookStore. Made with ❤️ for Kurdish readers.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+            <a href="index.html" style="color: #9ca3af; margin: 0 0.5rem;">Home</a> | 
+            <a href="about.html" style="color: #9ca3af; margin: 0 0.5rem;">About</a> | 
+            <a href="books.html" style="color: #9ca3af; margin: 0 0.5rem;">Books</a>
+        </p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon. 🙏');
+            e.target.reset();
+        }
+    </script>
+
+</body>
+</html>

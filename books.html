@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Books - Kurdish BookStore</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: url("Flag_map_of_Kurdistan.png") no-repeat center;
+            background-size: contain;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body { background: linear-gradient(to bottom, #fffbeb, #fef3c7); line-height: 1.6; }
+        a { text-decoration: none; }
+
+        header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav { max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; color: #dc2626; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .logo img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; padding: 5px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #fbbf24; }
+        
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links a { color: #4b5563; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #d97706; }
+        .nav-links a.active { color: #d97706; border-bottom: 2px solid #d97706; }
+
+        .btn { padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 500; display: inline-block; transition: 0.3s; }
+        .btn-login { color: #b45309; }
+        .btn-login:hover { color: #92400e; }
+        .btn-primary { background: #d97706; color: white; border: none; }
+        .btn-primary:hover { background: #b45309; }
+
+        section { padding: 4rem 1.5rem; position: relative; z-index: 1; }
+        
+        .page-header { text-align: center; margin-bottom: 3rem; }
+        .page-header h1 { font-size: 2.5rem; color: #1f2937; margin-bottom: 0.5rem; }
+        .page-header p { color: #6b7280; }
+
+        /* Search Bar */
+        .search-container { max-width: 600px; margin: 0 auto 3rem; display: flex; gap: 0.5rem; }
+        .search-input { flex: 1; padding: 0.85rem 1.25rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; font-size: 1rem; transition: border-color 0.3s; }
+        .search-input:focus { outline: none; border-color: #d97706; }
+        .search-btn { padding: 0.85rem 1.5rem; background: #d97706; color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .search-btn:hover { background: #b45309; }
+
+        /* Category Filter */
+        .filter-tabs { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+        .filter-tab { padding: 0.5rem 1.25rem; background: white; border: 2px solid #e5e7eb; border-radius: 2rem; cursor: pointer; font-weight: 500; color: #6b7280; transition: all 0.3s; }
+        .filter-tab:hover, .filter-tab.active { background: #d97706; color: white; border-color: #d97706; }
+
+        /* Books Grid */
+        .books-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; }
+        
+        .book-card { background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s, box-shadow 0.3s; }
+        .book-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+        
+        .book-cover { 
+            height: 280px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 6rem;
+            position: relative;
+        }
+        .book-cover.fiction { background: linear-gradient(135deg, #fecaca, #fca5a5); }
+        .book-cover.science { background: linear-gradient(135deg, #bfdbfe, #93c5fd); }
+        .book-cover.technology { background: linear-gradient(135deg, #a7f3d0, #6ee7b7); }
+        .book-cover.children { background: linear-gradient(135deg, #fde68a, #fcd34d); }
+        .book-badge { position: absolute; top: 12px; right: 12px; background: #dc2626; color: white; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 600; }
+        
+        .book-info { padding: 1.25rem; }
+        .book-category { color: #d97706; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .book-title { color: #1f2937; font-size: 1.1rem; font-weight: 700; margin: 0.5rem 0; }
+        .book-author { color: #6b7280; font-size: 0.9rem; margin-bottom: 0.75rem; }
+        .book-footer { display: flex; justify-content: space-between; align-items: center; }
+        .book-price { color: #1f2937; font-size: 1.25rem; font-weight: 700; }
+        .book-price span { font-size: 0.85rem; color: #9ca3af; font-weight: 400; text-decoration: line-through; margin-left: 0.5rem; }
+        
+        .add-cart-btn { 
+            background: #d97706; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer; font-weight: 600; transition: 0.3s; 
+        }
+        .add-cart-btn:hover { background: #b45309; }
+
+        /* Cart Summary */
+        .cart-summary { 
+            position: fixed; bottom: 20px; right: 20px; 
+            background: #1f2937; color: white; 
+            padding: 1rem 1.5rem; border-radius: 1rem; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex; align-items: center; gap: 1rem;
+            z-index: 200;
+        }
+        .cart-count { background: #dc2626; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: bold; }
+
+        footer { background: #1f2937; color: #9ca3af; text-align: center; padding: 2rem; position: relative; z-index: 1; }
+
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #1f2937; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+            .nav-links.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .page-header h1 { font-size: 1.8rem; }
+            .search-container { flex-direction: column; }
+            .books-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="Flag_map_of_Kurdistan.png" alt="Logo">
+                Kurdish BookStore
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="books.html" class="active">Books</a>
+                <a href="contact.html">Contact</a>
+                <a href="login.html" class="btn btn-login">Login</a>
+                <a href="register.html" class="btn btn-primary">Register</a>
+            </div>
+        </nav>
+    </header>
+
+    <section>
+        <div class="page-header">
+            <h1>📚 Our Book Collection</h1>
+            <p>Find your next favorite book from our curated collection</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search by title, author, or keyword..." id="searchInput">
+            <button class="search-btn" onclick="searchBooks()">Search</button>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterBooks('all')">All Books</button>
+            <button class="filter-tab" onclick="filterBooks('fiction')">Fiction</button>
+            <button class="filter-tab" onclick="filterBooks('science')">Science</button>
+            <button class="filter-tab" onclick="filterBooks('technology')">Technology</button>
+            <button class="filter-tab" onclick="filterBooks('children')">Children</button>
+        </div>
+
+        <div class="books-grid" id="booksGrid">
+            <!-- Book 1 -->
+            <div class="book-card" data-category="fiction">
+                <div class="book-cover fiction">
+                    📖
+                    <span class="book-badge">BESTSELLER</span>
+                </div>
+                <div class="book-info">
+                    <div class="book-category">Fiction</div>
+                    <h3 class="book-title">Mem û Zîn</h3>
+                    <p class="book-author">by Ehmedê Xanî</p>
+                    <div class="book-footer">
+                        <div class="book-price">$15 <span>$20</span></div>
+                        <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 2 -->
+            <div class="book-card" data-category="fiction">
+                <div class="book-cover fiction">📕</div>
+                <div class="book-info">
+                    <div class="book-category">Fiction</div>
+                    <h3 class="book-title">The Kurdish Dream</h3>
+                    <p class="book-author">by Sherzad Hassan</p>
+                    <div class="book-footer">
+                        <div class="book-price">$18</div>
+                        <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 3 -->
+            <div class="book-card" data-category="science">
+                <div class="book-cover science">🔬</div>
+                <div class="book-info">
+                    <div class="book-category">Science</div>
+                    <h3 class="book-title">Physics Essentials</h3>
+                    <p class="book-author">by Dr. Kareem Ali</p>
+                    <div class="book-footer">
+                        <div class="book-price">$25 <span>$32</span></div>
+                        <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 4 -->
+            <div class="book-card" data-category="technology">
+                <div class="book-cover technology">💻</div>
+                <div class="book-info">
+                    <div class="book-category">Technology</div>
+                    <h3 class="book-title">Learn Python</h3>
+                    <p class="book-author">by Dilshad Omer</p>
+                    <div class="book-footer">
+                        <div class="book-price">$22</div>
+                        <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 5 -->
+            <div class="book-card" data-category="children">
+                <div class="book-cover children">
+                    🧸
+                    <span class="book-badge">NEW</span>
+                </div>
+                <div class="book-info">
+                    <div class="book-category">Children</div>
+                    <h3 class="book-title">The Little Kurd</h3>
+                    <p class="book-author">by Choman Hardi</p>
+                    <div class="book-footer">
+                        <div class="book-price">$12</div>
+                        <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 6 -->
+            <div class="book-card" data-category="fiction">
+                <div class="book-cover fiction">📗</div>
+                <div class="book-info">
+                    <div class="book-category">Fiction</div>
+                    <h3 class="book-title">Mountain Tales</h3>
+                    <p class="book-author">by Bakhtiyar Ali</p>
+                    <div class="book-footer">
+                        <div class="book-price">$16 <span>$22</span></div>
+                        <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 7 -->
+            <div class="book-card" data-category="science">
+                <div class="book-cover science">🧪</div>
+                <div class="book-info">
+                    <div class="book-category">Science</div>
+                    <h3 class="book-title">Chemistry Basics</h3>
+                    <p class="book-author">by Prof. Hawar</p>
+                    <div class="book-footer">
+                        <div class="book-price">$28</div>
+                        <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 8 -->
+            <div class="book-card" data-category="technology">
+                <div class="book-cover technology">🌐</div>
+                <div class="book-info">
+                    <div class="book-category">Technology</div>
+                    <h3 class="book-title">Web Development</h3>
+                    <p class="book-author">by Aram Jamal</p>
+                    <div class="book-footer">
+                        <div class="book-price">$30 <span>$38</span></div>
+                        <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 9 -->
+            <div class="book-card" data-category="children">
+                <div class="book-cover children">⭐</div>
+                <div class="book-info">
+                    <div class="book-category">Children</div>
+                    <h3 class="book-title">Stars & Dreams</h3>
+                    <p class="book-author">by Lala Shekh</p>
+                    <div class="book-footer">
+                        <div class="book-price">$10</div>
+                        <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Summary -->
+    <div class="cart-summary" id="cartSummary">
+        <span>🛒</span>
+        <span>Cart:</span>
+        <span class="cart-count" id="cartCount">0</span>
+        <span id="cartTotal">$0</span>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Kurdish BookStore. Made with ❤️ for Kurdish readers.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+            <a href="index.html" style="color: #9ca3af; margin: 0 0.5rem;">Home</a> | 
+            <a href="about.html" style="color: #9ca3af; margin: 0 0.5rem;">About</a> | 
+            <a href="contact.html" style="color: #9ca3af; margin: 0 0.5rem;">Contact</a>
+        </p>
+    </footer>
+
+    <script>
+        let cartCount = 0;
+        let cartTotal = 0;
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        function addToCart(btn) {
+            const card = btn.closest('.book-card');
+            const priceText = card.querySelector('.book-price').textContent;
+            const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+            
+            cartCount++;
+            cartTotal += price;
+            
+            document.getElementById('cartCount').textContent = cartCount;
+            document.getElementById('cartTotal').textContent = '$' + cartTotal.toFixed(0);
+            
+            btn.textContent = '✓ Added';
+            btn.style.background = '#16a34a';
+            
+            setTimeout(() => {
+                btn.textContent = 'Add to Cart';
+                btn.style.background = '#d97706';
+            }, 1500);
+        }
+
+        function filterBooks(category) {
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const cards = document.querySelectorAll('.book-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function searchBooks() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.book-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.book-title').textContent.toLowerCase();
+                const author = card.querySelector('.book-author').textContent.toLowerCase();
+                
+                if (title.includes(query) || author.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchBooks();
+        });
+    </script>
+
+</body>
+</html>

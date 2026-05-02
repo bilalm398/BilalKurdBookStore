@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kurdish BookStore - Home</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: url("Flag_map_of_Kurdistan.png") no-repeat center;
+            background-size: contain;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body { background: linear-gradient(to bottom, #fffbeb, #fef3c7); line-height: 1.6; }
+        a { text-decoration: none; }
+
+        /* Navigation */
+        header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav { max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; color: #dc2626; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .logo img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; padding: 5px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #fbbf24; }
+        
+        /* Nav Links */
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links a { color: #4b5563; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #d97706; }
+        .nav-links a.active { color: #d97706; border-bottom: 2px solid #d97706; }
+
+        /* Buttons */
+        .btn { padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 500; display: inline-block; transition: 0.3s; }
+        .btn-login { color: #b45309; }
+        .btn-login:hover { color: #92400e; }
+        .btn-primary { background: #d97706; color: white; border: none; }
+        .btn-primary:hover { background: #b45309; }
+
+        /* Sections */
+        section { padding: 4rem 1.5rem; text-align: center; position: relative; z-index: 1; }
+        #home h2 { font-size: 3rem; color: #1f2937; margin-bottom: 1rem; }
+        #home p { color: #6b7280; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        
+        .categories-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .category-card { padding: 1.5rem; border-radius: 1rem; text-align: left; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; }
+        .category-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .category-card h3 { color: #1f2937; margin: 1rem 0 0.5rem; }
+        .category-card p { color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem; }
+        .icon { font-size: 3rem; }
+
+        footer { background: #1f2937; color: #9ca3af; text-align: center; padding: 2rem; position: relative; z-index: 1; }
+
+        /* Mobile Menu */
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #1f2937; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+            .nav-links.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+            #home h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="Flag_map_of_Kurdistan.png" alt="Logo">
+                Kurdish BookStore
+            </div>
+            
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="active">Home</a>
+                <a href="about.html">About</a>
+                <a href="books.html">Books</a>
+                <a href="contact.html">Contact</a>
+                <a href="login.html" class="btn btn-login">Login</a>
+                <a href="register.html" class="btn btn-primary">Register</a>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home">
+        <h2>Welcome to <span style="color: #d97706;">Kurdish BookStore</span></h2>
+        <p>Discover thousands of books in Kurdish and other languages. Your next adventure awaits!</p>
+        <br>
+        <a href="books.html" class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1.1rem;">Browse Books →</a>
+    </section>
+
+    <section id="categories">
+        <h2 style="color: #1f2937; margin-bottom: 2rem;">Browse Categories</h2>
+        <div class="categories-grid">
+            <a href="books.html?category=fiction" style="text-decoration: none;">
+                <div class="category-card">
+                    <div class="icon">📖</div>
+                    <h3>Fiction</h3>
+                    <p>Captivating stories that will transport you to new worlds.</p>
+                </div>
+            </a>
+            <a href="books.html?category=science" style="text-decoration: none;">
+                <div class="category-card">
+                    <div class="icon">🔬</div>
+                    <h3>Science</h3>
+                    <p>Explore the wonders of science and discovery.</p>
+                </div>
+            </a>
+            <a href="books.html?category=technology" style="text-decoration: none;">
+                <div class="category-card">
+                    <div class="icon">💻</div>
+                    <h3>Technology</h3>
+                    <p>Stay updated with the latest in tech.</p>
+                </div>
+            </a>
+            <a href="books.html?category=children" style="text-decoration: none;">
+                <div class="category-card">
+                    <div class="icon">🧸</div>
+                    <h3>Children</h3>
+                    <p>Fun and educational books for young readers.</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" style="background: white; margin: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <h2 style="color: #1f2937; margin-bottom: 2rem;">Why Choose Us?</h2>
+        <div class="categories-grid" style="max-width: 900px;">
+            <div class="category-card" style="text-align: center;">
+                <div class="icon">🚚</div>
+                <h3>Fast Delivery</h3>
+                <p>Get your books delivered quickly across Kurdistan.</p>
+            </div>
+            <div class="category-card" style="text-align: center;">
+                <div class="icon">💰</div>
+                <h3>Best Prices</h3>
+                <p>Affordable prices for quality books.</p>
+            </div>
+            <div class="category-card" style="text-align: center;">
+                <div class="icon">📚</div>
+                <h3>Vast Collection</h3>
+                <p>Thousands of titles to choose from.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Kurdish BookStore. Made with ❤️ for Kurdish readers.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+            <a href="about.html" style="color: #9ca3af; margin: 0 0.5rem;">About</a> | 
+            <a href="books.html" style="color: #9ca3af; margin: 0 0.5rem;">Books</a> | 
+            <a href="contact.html" style="color: #9ca3af; margin: 0 0.5rem;">Contact</a>
+        </p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+    </script>
+
+</body>
+</html>
